@@ -113,7 +113,7 @@ class Game
       else
         puts 'You missed!'
         @board.grid[x][y]='M'
-        @shots.grid[x][y]='M'
+        @shots.grid[x][y]='W'.colorize(:background => :blue, :color => :blue)
       end
     else
       puts 'You are missing opportunities here!! Hit twice the same place??'
@@ -155,8 +155,8 @@ class Game
   end
 
   def update_shots(x,y)
-    @shots.grid[x][y]='X'
     @board.grid[x][y]='X'
+    @shots.grid[x][y]='S'.colorize(:background => :red, :color => :red)
   end
 end
 
@@ -231,8 +231,6 @@ def ready?
       player_y = fff[2]
 
       game.check_shot(player_y.to_i, player_x.to_i)
-      print "Do you want to continue? (y/n) "
-      reply = gets.strip.downcase
       game.shots.print_board
 
       tries +=1
