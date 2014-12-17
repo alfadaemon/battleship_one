@@ -5,11 +5,11 @@ class Game
 
   def initialize
     intro
-    @board = Board.new
+    @board = Board.new('0')
     @shots = Board.new
-    @ships = [ Ship.new(2, 'S')#, Ship.new(3, 'D1'),
-               #Ship.new(3, 'D2'), Ship.new(4, 'C'),
-               #Ship.new(5, 'A')
+    @ships = [ Ship.new(2, 'S'), Ship.new(3, 'D1'),
+               Ship.new(3, 'D2'), Ship.new(4, 'C'),
+               Ship.new(5, 'A')
     ]
   end
 
@@ -113,6 +113,7 @@ class Game
       else
         puts 'You missed!'
         @board.grid[x][y]='M'
+        @shots.grid[x][y]='M'
       end
     else
       puts 'You are missing opportunities here!! Hit twice the same place??'
@@ -154,7 +155,7 @@ class Game
   end
 
   def update_shots(x,y)
-    @shots.grid[x][y]='1'
+    @shots.grid[x][y]='X'
     @board.grid[x][y]='X'
   end
 end
@@ -180,12 +181,12 @@ end
 class Board
   attr_accessor :grid
 
-  def initialize
-    set_grid
+  def initialize(char=' ')
+    set_grid(char)
   end
 
-  def set_grid
-    @grid = Array.new(10).map { Array.new(10, "0") }
+  def set_grid(char=' ')
+    @grid = Array.new(10).map { Array.new(10, char) }
   end
 
   def print_board
@@ -222,7 +223,7 @@ def ready?
   if reply == "y"
     game = Game.new
     game.set_ships_on_board
-    game.board.print_board
+    game.shots.print_board
     while reply == "y"
       print "Enter you shot (x,y): "
       fff = gets.chomp
@@ -232,7 +233,7 @@ def ready?
       game.check_shot(player_y.to_i, player_x.to_i)
       print "Do you want to continue? (y/n) "
       reply = gets.strip.downcase
-      game.board.print_board
+      game.shots.print_board
 
       tries +=1
 
