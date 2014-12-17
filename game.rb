@@ -7,9 +7,9 @@ class Game
     intro
     @board = Board.new
     @shots = Board.new
-    @ships = [ Ship.new(2, 'S'), Ship.new(3, 'D1'),
-               Ship.new(3, 'D2'), Ship.new(4, 'C'),
-               Ship.new(5, 'A')
+    @ships = [ Ship.new(2, 'S')#, Ship.new(3, 'D1'),
+               #Ship.new(3, 'D2'), Ship.new(4, 'C'),
+               #Ship.new(5, 'A')
     ]
   end
 
@@ -140,7 +140,7 @@ class Game
 
   def check_win
     win=true
-    ships.each do |sink|
+    ships.each do |s|
       sink = s.pos.detect { |p| p[:hit]==0 }
       if !sink.nil?
         win=false
@@ -209,6 +209,7 @@ class Board
 end
 
 def ready?
+  tries = 0
   print "Welcome to my game of Battleships, are you ready? (y/n) "
   reply = gets.strip.downcase
 
@@ -233,7 +234,10 @@ def ready?
       reply = gets.strip.downcase
       game.board.print_board
 
-      if check_win
+      tries +=1
+
+      if game.check_win
+        puts 'You won in '+tries.to_s+' tries!'
         break
       end
     end
